@@ -12,18 +12,18 @@ services:
    volumes:
     - .:/app
 
-#   db:
-#    image: postgres:17
-#    container_name: ascendstats-db
-#    restart: always
-#    environment:
-#     POSTGRES_USER: my_user
-#     POSTGRES_PASSWORD: my_password
-#     POSTGRES_DB: my_database
-#    volumes:
-#     - postgres_data:/var/lib/postgresql/data
-#    ports:
-#     - "5432:5432"
+  db:
+   image: postgres:17
+   container_name: ascendstats-db
+   restart: always
+   environment:
+    POSTGRES_USER: my_user
+    POSTGRES_PASSWORD: my_password
+    POSTGRES_DB: my_database
+   volumes:
+    - postgres_data:/var/lib/postgresql/data
+   ports:
+    - "5432:5432"
   
-# volumes:
-#   postgres_data:
+volumes:
+  postgres_data:
