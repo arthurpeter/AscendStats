@@ -11,4 +11,38 @@ AscendStats is a Django-based web application designed to provide insightful cli
 - **Email Notifications**: Configurable email backend for user notifications.
 
 ## Project Structure
-AscendStats/ ├── ascendstats/ # Core project files │ ├── settings.py # Project settings │ ├── urls.py # URL routing │ ├── wsgi.py # WSGI entry point │ ├── asgi.py # ASGI entry point ├── main/ # Main application │ ├── models.py # Database models │ ├── views.py # View logic │ ├── templates/ # HTML templates │ ├── static/ # Static files (CSS, JS, images) ├── register/ # User registration and authentication │ ├── backends.py # Custom authentication backends │ ├── forms.py # Registration and login forms ├── staticfiles/ # Collected static files for production ├── manage.py # Django management script ├── requirements.txt # Python dependencies ├── Dockerfile # Docker configuration ├── docker-compose.yml # Docker Compose configuration └── .env # Environment variables
+AscendStats/
+├── ascendstats/             # Core project files
+│   ├── settings.py          # Project settings
+│   ├── urls.py              # URL routing
+│   ├── wsgi.py              # WSGI entry point
+│   └── asgi.py              # ASGI entry point
+├── main/                    # Main application
+│   ├── models.py            # Database models
+│   ├── views.py             # View logic
+│   ├── templates/           # HTML templates
+│   └── static/              # Static files (CSS, JS, images)
+├── register/                # User registration and authentication
+│   ├── backends.py          # Custom authentication backends
+│   └── forms.py             # Registration and login forms
+├── staticfiles/             # Collected static files for production
+├── manage.py                # Django management script
+├── requirements.txt         # Python dependencies
+├── Dockerfile               # Docker configuration
+├── docker-compose.yml       # Docker Compose configuration
+└── .env                     # Environment variables
+
+## Prerequisites
+
+- Python 3.12+
+- Django 5.1+
+- Docker and Docker Compose (optional for containerized deployment)
+
+## Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/AscendStats.git
+cd AscendStats
+```
