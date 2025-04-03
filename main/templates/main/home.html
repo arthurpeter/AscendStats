@@ -1,0 +1,367 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home{% endblock %}
+{% load static %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <!-- Modal for Style Distribution -->
+    <div class="modal fade" id="styleDistributionModal" tabindex="-1" aria-labelledby="styleDistributionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="styleDistributionModalLabel">Style Distribution (by Boulders)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <canvas id="styleDistributionChart" style="height: 300px;"></canvas>
+                    <p class="mt-3 text-center" id="styleSuggestion"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <!-- Level and Progress Section -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="d-flex flex-column align-items-center">
+                        <!-- Level Display -->
+                        <div class="level-display mb-3">
+                            <div class="level-label">Level</div>
+                            <div class="level-number">{{ user.level|default:"1" }}</div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress progress-thin w-100">
+                            <div class="progress-bar progress-bar-striped" 
+                                role="progressbar" 
+                                style="width: {% widthratio user.experience_points|default:0 user.level_up_xp|default:1 100 %}%; 
+                                        background: linear-gradient(135deg, #1e3c72, #2a5298);">
+                            </div>
+                        </div>
+
+                        <!-- Level Up Info -->
+                        <div class="mt-2 text-muted small">
+                            {% if user.level < 100 %}
+                                XP: {{ user.experience_points|default:"0" }}/{{ user.level_up_xp }}
+                                ({% widthratio user.experience_points|default:0 user.level_up_xp|default:1 100 %}%)
+                            {% else %}
+                                🎉 Maximum Level Achieved!
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br></br>
+        <!-- Quick Stats Header -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">
+                            Estimated Flash Grade
+                            <i class="fas fa-info-circle small text-muted ms-1" 
+                                data-bs-toggle="popover" 
+                                data-bs-placement="top"
+                                data-bs-content="This is an estimation for the grade you are going to send on your first attempt 50% of the time.
+                                The more climbs you log, the more accurate this prediction will be.
+                                Calculated based on the data from the past month. If you have not logged any climbs yet, this will be N/A.">
+                            </i>
+                        </h5>
+                        <div class="display-4 fw-bold">
+                            {% if user.current_flash_grade or user.current_flash_grade == 0.0 %}
+                                V{{ user.current_flash_grade|floatformat:1 }}
+                            {% else %}
+                                <small class="text-muted">N/A</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">
+                            Max Grade
+                            <i class="fas fa-info-circle small text-muted ms-1" 
+                                data-bs-toggle="popover" 
+                                data-bs-placement="top"
+                                data-bs-content="This is the highest grade you have ever sent.">
+                            </i>
+                        </h5>
+                        <div class="display-4 fw-bold">
+                            {% if user.max_grade or user.max_grade == 0 %}
+                                V{{ user.max_grade }}
+                            {% else %}
+                                <small class="text-muted">N/A</small>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'climbs' %}" class="btn btn-primary btn-sm mt-2">
+                            <i class="fas fa-plus"></i> Log Climb
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">
+                            Preferred Style
+                            <i class="fas fa-info-circle small text-muted ms-1" 
+                                data-bs-toggle="popover" 
+                                data-bs-placement="top"
+                                data-bs-content="This is based on the style of boulders you have climbed the most.
+                                Calculated based on the data from the past month. If you have not logged any climbs yet
+                                or have not logged their style, this will be N/A.">
+                            </i>
+                        </h5>
+                        <div class="display-4 fw-bold">
+                            {% if preferred_style %}
+                                {{ preferred_style }}
+                            {% else %}
+                                <small class="text-muted">N/A</small>
+                            {% endif %}
+                        </div>
+                        <a href="style_distribution" class="btn btn-link btn-sm" id="viewDistributionButton" data-url="{% url 'style_distribution_data' %}">View Distribution</a>                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row g-4">
+            <!-- Progress Chart -->
+            <div class="col-md-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Grade Progression</h5>
+                        <div class="chart-container" style="height: 300px">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Climbs</h5>
+                        <div class="list-group list-group-flush">
+                            {% for climb in recent_climbs %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold">V{{ climb.grade }}</span>
+                                        <small class="text-muted">{{ climb.date|date:"M d" }}</small>
+                                    </div>
+                                    <div class="text-muted small">
+                                        {{ climb.style }} • {{ climb.attempts }} attempt{{ climb.attempts|pluralize }}
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-center text-muted py-3">
+                                    No climbs recorded yet
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'climbs' %}" class="btn btn-link btn-sm mt-2">View All Climbs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Row -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                        <h5>Advanced Analytics</h5>
+                        <p class="text-muted small">Deep dive into your performance metrics</p>
+                        <a href="{% url 'advanced' %}" class="btn btn-outline-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-dumbbell fa-3x text-success mb-3"></i>
+                        <h5>Training Plan</h5>
+                        <p class="text-muted small">Personalized workout recommendations</p>
+                        <a href="{% url 'comming_soon' %}" class="btn btn-outline-success">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            transition: transform 0.2s;
+            border: none;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+        }
+        .chart-container {
+            min-height: 300px;
+        }
+    </style>
+
+    <!-- Send chart data to js -->
+    {{ chart_data|json_script:"chart-data" }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize popovers
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl, {
+                trigger: window.matchMedia("(hover: hover)").matches ? 'hover focus' : 'click', // Use 'click' on touch devices
+                container: 'body'
+            });
+        });
+
+        // Close popovers when clicking outside (for mobile)
+        document.addEventListener('click', function (e) {
+            popoverList.forEach(function (popover) {
+                if (popover._element && !popover._element.contains(e.target)) {
+                    popover.hide();
+                }
+            });
+        });
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/style_chart.js' %}"></script>
+
+        {% else %}
+        <div class="container mt-5">
+            <!-- Hero Section -->
+            <div class="row text-center mb-5 py-5 bg-primary text-white rounded-3 shadow" 
+                style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                <div class="col-md-8 mx-auto">
+                    <h1 class="display-4 fw-bold mb-4">Track Your Climbing Progress</h1>
+                    <p class="lead mb-4">
+                        Analyze your climbing performance, predict your flash grade, and improve your skills with data-driven insights
+                    </p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg px-4 gap-3">Get Started</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">Sign In</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="row g-4 py-5 text-center">
+                <h2 class="mb-5">Why Choose Ascend Stats?</h2>
+                
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="feature-icon bg-primary bg-gradient text-white rounded-circle p-3 mb-3 mx-auto">
+                                <i class="fas fa-chart-bar fa-2x"></i>
+                            </div>
+                            <h3>Progress Tracking</h3>
+                            <p>Visualize your improvement over time with detailed analytics and graphs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="feature-icon bg-success bg-gradient text-white rounded-circle p-3 mb-3 mx-auto">
+                                <i class="fas fa-bullseye fa-2x"></i>
+                            </div>
+                            <h3>Grade Prediction</h3>
+                            <p>Smart algorithms estimate your current flash capabilities</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="feature-icon bg-warning bg-gradient text-white rounded-circle p-3 mb-3 mx-auto">
+                                <i class="fas fa-dumbbell fa-2x"></i>
+                            </div>
+                            <h3>Training Insights</h3>
+                            <p>Identify strengths and weaknesses to optimize your training sessions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Visualization Preview -->
+            <div class="analytics-preview mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-8 mx-auto text-center">
+                        <h3 class="mb-4">Track All Aspects of Your Climbing</h3>
+                        <div class="card shadow-sm">
+                            <div class="card-body p-0">
+                                <!-- Replace with your actual screenshot -->
+                                <img src= "{% static 'img/example-chart.jpg' %}"
+                                     alt="Analytics dashboard preview" 
+                                     class="img-fluid rounded">
+                                <div class="p-3">
+                                    <p class="text-muted mb-0">Example of progress tracking and performance metrics</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="row mt-5 py-5 bg-dark text-white rounded-3 shadow">
+                <div class="col-md-8 mx-auto text-center">
+                    <h2 class="mb-4">Start Your Climbing Journey</h2>
+                    <p class="mb-4">Join climbers who are improving their skills with data-driven insights</p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg px-4 gap-3">Create Free Account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .feature-icon {
+                transition: transform 0.2s;
+            }
+            .card:hover .feature-icon {
+                transform: scale(1.1);
+            }
+            .btn-primary {
+                background: #e94f37;
+                border-color: #e94f37;
+            }
+            .btn-primary:hover {
+                background: #c23d28;
+                border-color: #c23d28;
+            }
+            .analytics-preview img {
+                border-bottom: 1px solid #dee2e6; /* subtle separator */
+            }
+
+            @media (max-width: 768px) {
+                .analytics-preview .card {
+                    margin-left: -15px;
+                    margin-right: -15px;
+                    border-radius: 0;
+                }
+                
+                .analytics-preview img {
+                    border-radius: 0 !important;
+                }
+            }
+        </style>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Email Confirmation Successful{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block extra_head %}
+<meta http-equiv="refresh" content="5;url={% url 'home' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg mb-5 border-0">
+        <div class="card-header bg-primary text-white py-4" 
+             style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <h1 class="display-6 mb-0 text-center">
+                <i class="fas fa-check-circle me-2"></i> Email Confirmed!
+            </h1>
+        </div>
+        <div class="card-body bg-light text-center">
+            <p class="lead">
+                Thank you for confirming your email address. Your account is now active.
+            </p>
+            <p class="text-muted">
+                You'll be redirected automatically in a few seconds...
+            </p>
+            <div class="spinner-border text-primary mt-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-4">
+                    <i class="fas fa-home me-2"></i> Go Home Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Inline styles for email compatibility */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            background-color: #1e3c72;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        .email-body {
+            padding: 20px;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .email-footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+            color: #777777;
+            font-size: 12px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: #1e3c72;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #163a5f;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Ascend Stats</h1>
+        </div>
+        <div class="email-body">
+            <p>Hi {{ user.get_username }},</p>
+            <p>Thank you for signing up at <strong>Ascend Stats</strong>. Please confirm your email address by clicking the button below:</p>
+            <p style="text-align: center;">
+                <a href="{{ activate_url }}" class="button">Confirm Email</a>
+            </p>
+            <p>If you didn't request this, you can ignore this email.</p>
+            <p>Thanks,<br>The Ascend Stats Team</p>
+        </div>
+        <div class="email-footer">
+            &copy; Ascend Stats. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

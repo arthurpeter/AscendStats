@@ -1,0 +1,91 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Coming Soon...{% endblock %}
+
+{% block content %}
+<div class="coming-soon">
+    <div class="container">
+        <div class="row justify-content-center min-vh-100 align-items-center">
+            <div class="col-lg-8 text-center">
+                <!-- Header Section -->
+                <div class="header-container mb-5">
+                    <h1 class="display-1 fw-bold text-light mb-3">
+                        <span class="badge bg-light text-primary mb-4" style="font-size: 2.5rem; padding: 1.5rem 3rem;">Coming Soon...</span><br>
+                        <span class="text-shadow">New Features in Development</span>  <!-- Added text-shadow class -->
+                    </h1>
+                    <p class="lead text-light mb-4">
+                        We're working hard to bring you enhanced climbing analytics tools
+                    </p>
+                </div>
+
+                <!-- Animated Icon -->
+                <div class="icon-container mb-5">
+                    <i class="fas fa-tools fa-6x text-white animate-float"></i>
+                </div>
+
+                <!-- Notification Section -->
+                <div class="notification-container">
+                    <div class="text-light mb-3">
+                        We'll notify you at <strong>{{ user.email }}</strong> when ready
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.coming-soon {
+    background: linear-gradient(135deg, #e94f37 0%, #c23d28 100%);
+    min-height: 100vh;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+.feature-card {
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.text-light {
+    color: #b8b9b9 !important;  /* Brighter off-white */
+}
+
+.text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);  /* Adds depth */
+}
+
+.header-container .badge {
+    color: #e94f37 !important;
+    font-size: 2.5rem !important;  /* Increased from 1.5rem */
+    padding: 1.5rem 3rem !important;  /* Increased padding */
+    letter-spacing: 2px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-light {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-light:hover {
+    background: #fff;
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}

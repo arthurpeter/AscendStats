@@ -1,0 +1,158 @@
+body {
+    font-family: "Times New Roman", Times, serif !important;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    padding: 10px;
+    background-color: #8b8b8b;
+}
+
+.custom-navbar {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff; /* Navbar buttons color */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffcc00; /* Navbar buttons color on hover */
+}
+
+#content {
+    background-image: url("../img/background.png");
+    background-size: 100% 100%;
+    background-position: top center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.col-auto {
+    height: calc(1.5em + 1rem + 2px); /* Match input field height */
+    line-height: 1.5;
+    align-items: baseline;
+    padding: 0.375rem 0.75rem;
+}
+
+.form-group {
+    margin-bottom: 0 !important;
+    flex-grow: 1;
+}
+
+/* Specific adjustment for the V prefix */
+.d-flex.align-items-center span {
+    position: relative;
+    top: 8px;  /* Adjust this value to fine-tune vertical position */
+    left: 5px;  /* Adjust this value to fine-tune horizontal position */
+    z-index: 1;
+    font-weight: bold;
+    color: #495057;
+}
+
+button[aria-expanded="true"] .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+.feature-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 60px;      /* Matches the circular container size */
+    height: 60px;     /* Matches the circular container size */
+    border-radius: 50%; /* Ensures the container is circular */
+    background-color: #f8f9fa; /* Optional: Background color for the circle */
+}
+
+.feature-icon i {
+    font-size: 2rem; /* Ensures consistent icon size */
+    width: 2rem;     /* Sets a fixed width */
+    height: 2rem;    /* Sets a fixed height */
+    display: flex;   /* Centers the icon */
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;  /* Centers the icon horizontally */
+}
+
+
+.progress-thin {
+    height: 10px;
+    border-radius: 5px;
+    overflow: visible;
+}
+
+.progress-thin .progress-bar {
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: visible;
+}
+
+.level-display {
+    text-align: center;
+    position: relative;
+}
+
+.level-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.level-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+    margin: 0.2rem 0;
+}
+
+.progress-bar-striped {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated stripes */
+.progress-bar-striped::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 1rem 1rem;
+    animation: progress-stripe 1s linear infinite;
+}
+
+@keyframes progress-stripe {
+    0% { background-position: 1rem 0; }
+    100% { background-position: 0 0; }
+}
+

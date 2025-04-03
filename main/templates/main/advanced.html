@@ -1,0 +1,103 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Advanced Analytics{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="card shadow-lg mb-5 border-0">
+        <div class="card-header bg-primary text-white py-4 text-center" 
+             style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <h1 class="display-5 mb-0">
+                <i class="bi bi-bar-chart-line me-3" aria-hidden="true"></i>
+                Advanced Analytics
+            </h1>
+        </div>
+    </div>
+
+    <!-- Grade Distribution Last Month -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Grade Distribution</h5>
+                <select class="form-select form-select-sm w-auto time-range-select" 
+                data-chart-type="grade-distribution">
+                    <option value="1" selected>Last Month</option>
+                    <option value="3">Last 3 Months</option>
+                    <option value="6">Last 6 Months</option>
+                    <option value="12">Last Year</option>
+                    <option value="0">All Time</option>
+                </select>
+            </div>
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="gradeDistributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Rate Per Attempt Per Grade -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Success Rate Per Attempt</h5>
+                <select class="form-select form-select-sm w-auto time-range-select" 
+                data-chart-type="success-rate">
+                    <option value="1" selected>Last Month</option>
+                    <option value="3">Last 3 Months</option>
+                    <option value="6">Last 6 Months</option>
+                    <option value="12">Last Year</option>
+                    <option value="0">All Time</option>
+                </select>
+            </div>
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="successRateChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Average Grade Sent All Time-->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Average Grade Sent</h5>
+            </div>
+            <div class="chart-container" style="height: 300px;">
+                <canvas id="averageGradeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session Analysis -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Session Analysis</h5>
+            <p class="text-muted">
+                <strong>Last Session:</strong> Your average grade sent was 
+                <strong>V{{ session_analysis_data.average_grade_last_session|floatformat:1 }}</strong> 
+                with an average of <strong>{{ session_analysis_data.average_attempts_last_session|floatformat:1 }}</strong> 
+                attempts per climb.
+            </p>
+            <p class="text-muted">
+                <strong>Past Month:</strong> Your average grade sent so far is 
+                <strong>V{{ session_analysis_data.average_grade|floatformat:1 }}</strong> 
+                with an average of <strong>{{ session_analysis_data.average_attempts|floatformat:1 }}</strong> 
+                attempts per climb.
+            </p>
+            <p class="text-muted">
+                {{ session_analysis_data.analysis }}
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+{{ average_grade_data|json_script:"average-grade-data" }}
+{{ grade_distribution_data|json_script:"grade-distribution-data" }}
+{{ success_rate_data|json_script:"success-rate-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/advanced_analytics.js' %}"></script>
+
+{% endblock %}

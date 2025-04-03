@@ -1,0 +1,117 @@
+{% extends 'main/base.html' %}
+
+{% block title %}About Ascend Stats{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- About Card -->
+    <div class="card shadow-lg mb-5 border-0">
+        <div class="card-header bg-primary text-white py-4" 
+             style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <h1 class="display-6 mb-0 text-center">
+                <i class="fas fa-info-circle me-2"></i> About Ascend Stats
+            </h1>
+        </div>
+        <div class="card-body bg-light">
+            <!-- Hero Section -->
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Your Partner in Climbing Progress</h2>
+                <p class="lead text-muted">
+                    At Ascend Stats, we're dedicated to helping climbers unlock their full potential through 
+                    data-driven insights. Our platform transforms your climbing sessions into actionable 
+                    analytics to help you climb smarter, not just harder.
+                </p>
+            </div>
+
+            <!-- Mission Section -->
+            <div class="row g-5 align-items-center mb-5">
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-4">Our Mission</h3>
+                    <p class="text-muted">
+                        At Ascend Stats, we're dedicated to helping climbers unlock their full potential through 
+                        data-driven insights. Our platform transforms your climbing sessions into actionable 
+                        analytics to help you climb smarter, not just harder.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <img src= "{% static 'img/example-chart2.png' %}" 
+                         alt="Climbing analytics visualization" 
+                         class="img-fluid rounded-3 shadow">
+                </div>
+            </div>
+
+            <!-- Values Section -->
+            <div class="bg-light py-5">
+                <h3 class="text-center mb-5">Our Core Values</h3>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                                <h5>Data-Driven Progress</h5>
+                                <p class="text-muted small">Precision analytics to track every aspect of your climbing journey</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-mountain fa-3x text-primary mb-3"></i>
+                                <h5>Climber-First Approach</h5>
+                                <p class="text-muted small">Tools designed by climbers, for climbers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                                <h5>Privacy Focused</h5>
+                                <p class="text-muted small">Your data remains yours - always secure and private</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="container py-5">
+                <h3 class="text-center mb-5">The Developer</h3>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Arthur</h5>
+                                        <p class="card-subtitle text-muted mb-3">Founder & Developer</p>
+                                        <p class="card-text">
+                                            Passionate climber and data enthusiast. Built Ascend Stats to combine 
+                                            technical expertise with climbing experience, creating tools that 
+                                            genuinely help climbers improve.
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Contact:</strong> <a href="mailto:contact.ascendstats@gmail.com">contact.ascendstats@gmail.com</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="bg-dark text-white py-5">
+                <div class="container text-center">
+                    <h3 class="mb-4 text-dark">Start Your Data-Driven Climbing Journey</h3>
+                    <a href="{% url 'register' %}" class="btn btn-light btn-lg">
+                        Join Now <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

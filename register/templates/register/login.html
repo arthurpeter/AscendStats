@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Login{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Login Card -->
+    <div class="card shadow-lg mb-5 border-0">
+        <div class="card-header bg-primary text-white py-4" 
+             style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <h1 class="display-6 mb-0 text-center">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Login
+            </h1>
+        </div>
+        <div class="card-body bg-light">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST" class="form-group">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="text-center mt-3">
+                    <button type="submit" name="login" class="btn btn-primary btn-lg px-4">Login</button>
+                </div>
+            </form>
+            <div class="text-center mt-4">
+                <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+                <p>Forgot your password? <a href="{% url 'password_reset' %}">Reset it</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
