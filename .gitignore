@@ -26,3 +26,6 @@ staticfiles/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Deployment files
+deploy.sh
