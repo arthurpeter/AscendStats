@@ -24,9 +24,9 @@ body {
 
 #content {
     background-image: url("../img/background.png");
-    background-size: 100% 100%;
+    background-size: auto;
     background-position: top center;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     min-height: 100vh;
     padding: 20px;
 }
